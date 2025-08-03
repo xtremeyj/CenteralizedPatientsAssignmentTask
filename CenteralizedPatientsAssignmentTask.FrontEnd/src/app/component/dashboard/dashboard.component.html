@@ -1,0 +1,27 @@
+<div class="top-actions">
+  <button mat-raised-button color="primary" (click)="goToPatientList()">
+    View Patient List
+  </button>
+  <button mat-raised-button color="accent" (click)="onLogout()">
+    Logout
+  </button>
+</div>
+
+<div class="chart-wrapper">
+  <mat-card class="chart-card">
+    <mat-card-title>Patients Per Hospital</mat-card-title>
+    <mat-card-content>
+      <echarts [options]="baseChartOptions"
+               [merge]="pieChartOptions" class="chart" style="width: 700px; height: 400px;" [autoResize]="true"></echarts>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="chart-card">
+    <mat-card-title>Monthly Admissions</mat-card-title>
+    <mat-card-content>
+      <echarts [options]="baseLineChartOptions"
+               [merge]="lineChartOptions" class="chart"
+               style="width: 700px; height: 400px;" [autoResize]="true"></echarts>
+    </mat-card-content>
+  </mat-card>
+</div>

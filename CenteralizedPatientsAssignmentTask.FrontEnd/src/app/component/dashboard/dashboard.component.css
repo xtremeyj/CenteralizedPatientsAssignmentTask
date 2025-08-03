@@ -1,0 +1,22 @@
+
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px;
+}
+
+
+chart-card {
+  margin-bottom: 24px;
+  padding: 16px;
+}
+
+.chart {
+  width: 100%;
+}
+
+.chart-wrapper {
+  width: 100%;
+  display: block;
+}
+

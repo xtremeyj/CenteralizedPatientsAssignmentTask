@@ -1,0 +1,9 @@
+.top-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px;
+}
+
+  .top-actions button {
+    min-width: 150px;
+  }

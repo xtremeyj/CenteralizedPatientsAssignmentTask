@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.18" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CenteralizedPatientsAssignmentTask.Database\CenteralizedPatientsAssignmentTask.Models.csproj" />
+    <ProjectReference Include="..\CenteralizedPatientsAssignmentTask.Infrastructure\CenteralizedPatientsAssignmentTask.Infrastructure.csproj" />
+    <ProjectReference Include="..\CenteralizedPatientsAssignmentTask.Interface\CenteralizedPatientsAssignmentTask.Common.csproj" />
+    <ProjectReference Include="..\CenteralizedPatientsAssignmentTask.Service\CenteralizedPatientsAssignmentTask.Service.csproj" />
+  </ItemGroup>
+
+</Project>

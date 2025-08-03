@@ -1,0 +1,95 @@
+<form [formGroup]="patientForm" (ngSubmit)="onSubmit()" class="patient-form" style="max-width: 600px; margin: auto;">
+
+  <h2>{{ isEditMode ? 'Edit Patient' : 'Add New Patient' }}</h2>
+
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput formControlName="name" placeholder="Enter patient name" />
+    <mat-error *ngIf="patientForm.get('name')?.hasError('required')">
+      Name is required
+    </mat-error>
+    <mat-error *ngIf="patientForm.get('name')?.hasError('minlength')">
+      Minimum 3 characters required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" placeholder="Enter patient Email" />
+    <mat-error *ngIf="patientForm.get('email')?.hasError('required')">
+      Email is required
+    </mat-error>
+    <mat-error *ngIf="patientForm.get('email')?.hasError('email')">
+      Email Id invalid
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Age</mat-label>
+    <input matInput type="number" formControlName="age" placeholder="Enter age" />
+    <mat-error *ngIf="patientForm.get('age')?.hasError('required')">Age is required</mat-error>
+    <mat-error *ngIf="patientForm.get('age')?.hasError('min')">Age cannot be negative</mat-error>
+    <mat-error *ngIf="patientForm.get('age')?.hasError('max')">Age seems invalid</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender" placeholder="Select gender">
+      <mat-option *ngFor="let g of genders" [value]="g">{{ g }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="patientForm.get('gender')?.hasError('required')">Gender is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Hospital Name</mat-label>
+    <input matInput formControlName="hospitalName" placeholder="Enter hospital name" />
+    <mat-error *ngIf="patientForm.get('hospitalName')?.hasError('required')">
+      Hospital name is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Diagnosis</mat-label>
+    <input matInput formControlName="diagnosis" placeholder="Enter diagnosis" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Contact Number</mat-label>
+    <input matInput formControlName="contactNo" placeholder="Enter contact number" />
+    <mat-error *ngIf="patientForm.get('contactNo')?.hasError('required')">
+      Contact number is required
+    </mat-error>
+    <mat-error *ngIf="patientForm.get('contactNo')?.hasError('pattern')">
+      Enter a valid 10 digit phone number
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status" placeholder="Select status">
+      <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="patientForm.get('status')?.hasError('required')">Status is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Created Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="createdDate" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="patientForm.get('createdDate')?.hasError('required')">
+      Created date is required
+    </mat-error>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button mat-raised-button color="primary" type="submit" [disabled]="patientForm.invalid">
+      Save
+    </button>
+    <button mat-raised-button color="secondary" type="button" (click)="onCancel()">
+      Cancel
+    </button>
+  </div>
+
+</form>

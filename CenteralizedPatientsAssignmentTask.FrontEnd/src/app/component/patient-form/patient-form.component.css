@@ -1,0 +1,37 @@
+.patient-form {
+  display: inline;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  padding: 24px;
+  overflow-y: auto;
+  max-height: 90vh; /* Ensure it fits within the viewport height */
+  box-sizing: border-box;
+}
+
+  .patient-form h2 {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.patient-form button {
+  align-self: flex-end; /* use 'center' if you want it centered */
+  margin-top: 24px;
+}
+
+@media (max-width: 600px) {
+  .patient-form {
+    padding: 16px;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 12px;
+}

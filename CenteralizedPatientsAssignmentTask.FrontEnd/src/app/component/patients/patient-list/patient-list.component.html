@@ -1,0 +1,169 @@
+<div class="top-actions">
+  <button mat-raised-button color="primary" (click)="onAddPatient()">
+    Add Patient
+  </button>
+  <button mat-flat-button color="accent" (click)="onGoBack()">
+    Back to Dashboard
+  </button>
+  <button mat-raised-button color="accent" (click)="onLogout()">
+    Logout
+  </button>
+</div>
+
+
+<form [formGroup]="filterForm" (ngSubmit)="applyFilters()" class="filter-form" style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+  <mat-form-field appearance="fill" style="flex: 1 1 200px;">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Name or Contact" formControlName="search" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="flex: 1 1 200px;">
+    <mat-label>Hospital</mat-label>
+    <input matInput placeholder="Hospital Name" formControlName="hospital" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="flex: 1 1 150px;">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="flex: 1 1 150px;">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option value="">All</mat-option>
+      <mat-option *ngFor="let g of genders" [value]="g">{{ g }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit" style="align-self: center;">Apply Filters</button>
+</form>
+
+<div class="export-buttons" style="margin-bottom: 16px;">
+  <button mat-stroked-button color="primary" (click)="exportToExcel()">Export Excel</button>
+  <button mat-stroked-button color="primary" (click)="exportToCSV()">Export CSV</button>
+</div>
+
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="onSortChange($event)" class="mat-elevation-z8" style="width: 100%;">
+
+  <!-- Select Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="toggleAllRows($event)"
+                    [checked]="isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                    aria-label="Select all patients"></mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="toggleRow(row)"
+                    [checked]="selection.isSelected(row)"
+                    aria-label="Select patient"></mat-checkbox>
+    </td>
+  </ng-container>
+
+  <!-- PatientId Column -->
+  <ng-container matColumnDef="patientId">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Patient ID</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.patientId }}</td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.name }}</td>
+  </ng-container>
+
+  <!-- Age Column -->
+  <ng-container matColumnDef="age">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Age</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.age }}</td>
+  </ng-container>
+
+  <!-- Gender Column -->
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.gender }}</td>
+  </ng-container>
+
+  <!-- HospitalName Column -->
+  <ng-container matColumnDef="hospitalName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Hospital</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.hospitalName }}</td>
+  </ng-container>
+
+  <!-- Diagnosis Column -->
+  <ng-container matColumnDef="diagnosis">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Diagnosis</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.diagnosis }}</td>
+  </ng-container>
+
+  <!-- ContactNo Column -->
+  <ng-container matColumnDef="contactNo">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.contactNo }}</td>
+  </ng-container>
+
+  <!-- Status Column -->
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.status }}</td>
+  </ng-container>
+
+  <!-- CreatedDate Column -->
+  <ng-container matColumnDef="createdDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Created Date</th>
+    <td mat-cell *matCellDef="let patient">{{ patient.createdDate | date:'short' }}</td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let patient">
+      <button mat-icon-button color="primary" (click)="editPatient(patient)" aria-label="Edit patient" *ngIf="hasUserEditAccess">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deletePatient(patient)" aria-label="Delete patient" *ngIf="hasUserEditAccess">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="viewPatient(patient)" aria-label="View patient">
+        <mat-icon>visibility</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      (click)="toggleRow(row)"
+      [class.selected]="selection.isSelected(row)"></tr>
+</table>
+
+<mat-paginator [length]="totalRecords"
+               [pageSize]="pageSize"
+               [pageSizeOptions]="[50, 100, 150, 200, totalRecords]"
+               showFirstLastButtons
+               (page)="onPageChange($event)">
+</mat-paginator>
+
+
+<ng-template #viewDialog let-data>
+  <h2 mat-dialog-title>Patient Details</h2>
+  <mat-dialog-content>
+    <p><strong>ID:</strong> {{ data.patientId }}</p>
+    <p><strong>Name:</strong> {{ data.name }}</p>
+    <p><strong>Age:</strong> {{ data.age }}</p>
+    <p><strong>Gender:</strong> {{ data.gender }}</p>
+    <p><strong>Hospital:</strong> {{ data.hospitalName }}</p>
+    <p><strong>Diagnosis:</strong> {{ data.diagnosis }}</p>
+    <p><strong>Contact:</strong> {{ data.contactNo }}</p>
+    <p><strong>Email:</strong> {{ data.email }}</p>
+    <p><strong>Status:</strong> {{ data.status }}</p>
+    <p><strong>Created:</strong> {{ data.createdDate | date: 'medium' }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>
+</ng-template>
