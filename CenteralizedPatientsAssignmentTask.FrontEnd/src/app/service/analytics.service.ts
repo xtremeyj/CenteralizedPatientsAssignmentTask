@@ -8,8 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AnalyticsService {
   private hubConnection!: signalR.HubConnection;
-
-  private readonly API_URL = 'http://localhost:5277/api/Analytics/analytics';
+  private readonly API_URL = 'http://localhost:5277';
   constructor(private http: HttpClient) { }
 
   private hospitalData$ = new BehaviorSubject<any[]>([]);
@@ -20,7 +19,7 @@ export class AnalyticsService {
 
   startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('http://localhost:5277/patientHub') // Adjust backend URL
+      .withUrl(`${this.API_URL}/patientHub`) // Adjust backend URL
       .withAutomaticReconnect()
       .build();
 
@@ -35,6 +34,6 @@ export class AnalyticsService {
   }
 
   getInitialData(): Observable<{ hospitals: any[], monthly: any[] }> {
-    return this.http.get<{ hospitals: any[], monthly: any[] }>(this.API_URL);
+    return this.http.get<{ hospitals: any[], monthly: any[] }>(`${this.API_URL}/api/Analytics/analytics`);
   }
 }

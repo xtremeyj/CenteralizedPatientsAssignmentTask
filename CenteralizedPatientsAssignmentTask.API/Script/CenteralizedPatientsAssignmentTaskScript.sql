@@ -2,7 +2,8 @@
 CREATE DATABASE CenteralizedPatientsAssignmentTaskDB;
 GO
 
-USE CenteralizedPatientsAssignmentTaskDB;
+USE CenteralizedPatientsAssignmentTaskDB
+;
 GO
 
 -- 2. Create Patients table
